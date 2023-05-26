@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
-  EditTransactionPayloadType,
-  Transaction,
+  EditFormPayloadType,
+  Form,
 } from "../../models/transactionModel";
 
 const defaultTransactions = [
@@ -163,13 +163,13 @@ const defaultTransactions = [
   },
 ];
 
-const initialState: Transaction[] = defaultTransactions;
+const initialState: Form[] = defaultTransactions;
 
-export const transactionSlice = createSlice({
+export const formSlice = createSlice({
   name: "transactions",
   initialState,
   reducers: {
-    addTransaction: (state, action: PayloadAction<Transaction>) => {
+    addTransaction: (state, action: PayloadAction<Form>) => {
       if (state.length !== 0 && state.length !== undefined) {
         let newdata = [...state];
 
@@ -193,13 +193,13 @@ export const transactionSlice = createSlice({
     },
     editTransaction: (
       state,
-      action: PayloadAction<EditTransactionPayloadType>
+      action: PayloadAction<EditFormPayloadType>
     ) => {
       const editid = action.payload.id;
 
       let newdata = [...state];
 
-      return newdata.map((item: Transaction) =>
+      return newdata.map((item: Form) =>
         item.id === editid ? (item = action.payload.edit) : item
       );
     },
@@ -208,12 +208,12 @@ export const transactionSlice = createSlice({
 
       let newdata = [...state];
 
-      return newdata.filter((item: Transaction) => item.id !== delId);
+      return newdata.filter((item: Form) => item.id !== delId);
     },
   },
 });
 
-const { actions, reducer } = transactionSlice;
+const { actions, reducer } = formSlice;
 
 export const { addTransaction, editTransaction, deleteTransaction } = actions;
 

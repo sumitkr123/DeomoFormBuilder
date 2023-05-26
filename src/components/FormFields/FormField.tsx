@@ -5,30 +5,29 @@ import {
   Merge,
   UseFormRegister,
 } from "react-hook-form";
-import { Transaction } from "../../models/transactionModel";
-import { User } from "../../models/userModel";
+import { Form } from "../../models/transactionModel";
 import React from "react";
 
 type FormFieldProps = {
   [key: string]: any;
-  error:
+  error?:
     | string
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<any>>
     | undefined;
-  formValues?: Transaction | User;
+  formValues?: Form;
   label?: string;
-  name: string;
+  name?: string;
   operations?: {
     [key: string]: (
       ...args: any[]
     ) =>
       | void
-      | React.Dispatch<React.SetStateAction<Transaction>>
+      | React.Dispatch<React.SetStateAction<Form>>
       | Promise<string | ArrayBuffer | null>;
   };
   otherType?: string;
-  register: UseFormRegister<FieldValues>;
+  register?: UseFormRegister<FieldValues>;
   type?: string;
   passRules?: JSX.Element | string;
   options?: string[];
@@ -81,10 +80,10 @@ const Field = ({
           className="forminputs"
           name={name}
           id={name}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         >
-          <option value={""}>Select {label}</option>
-          {options!.map((item: string, index: number) => (
+          <option value={""}>Select option</option>
+          {options?.map((item: string, index: number) => (
             <option key={item + index} value={item}>
               {item}
             </option>
@@ -99,7 +98,7 @@ const Field = ({
           type="number"
           id={name}
           name={name}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         />
       );
       break;
@@ -111,7 +110,7 @@ const Field = ({
           id={name}
           name={name}
           max={max}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         />
       );
       break;
@@ -121,7 +120,7 @@ const Field = ({
           className="forminputs"
           id={name}
           name={name}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         />
       );
       break;
@@ -130,12 +129,12 @@ const Field = ({
         case "image":
           fieldBlock = (
             <>
-              {formValues![name] === "" ? (
+              {formValues![name!] === "" ? (
                 <input
                   className="forminputs"
                   type="file"
                   {...(register
-                    ? register(name, {
+                    ? register(name!, {
                         onChange: async (e): Promise<void> => {
                           let file = await operations!.getFile(
                             e.target.files[0]
@@ -160,7 +159,7 @@ const Field = ({
                   <img
                     width={80}
                     height={60}
-                    src={`${formValues![name]}`}
+                    src={`${formValues![name!]}`}
                     alt="alt"
                   />
                 </>
@@ -176,7 +175,7 @@ const Field = ({
                 className="forminputs"
                 type="file"
                 {...(register
-                  ? register(name, {
+                  ? register(name!, {
                       onChange: async (e): Promise<void> => {
                         let file = await operations!.getFile(e.target.files[0]);
 
@@ -200,7 +199,7 @@ const Field = ({
           type="password"
           id={name}
           name={name}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         />
       );
       break;
@@ -211,7 +210,7 @@ const Field = ({
           type="text"
           id={name}
           name={name}
-          {...(register ? register(name) : null)}
+          {...(register ? register(name!) : null)}
         />
       );
       break;

@@ -88,3 +88,167 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #45a049;
 }
+
+.navUl {
+  display: inline-flex;
+  list-style-type: none;
+}
+
+.navUl * {
+  padding: 10px;
+  color: #2d7930;
+  cursor: pointer;
+}
+
+.dragdropformdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.choosingComponentDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+.draggedHere {
+  border: 2px solid #45a049;
+  padding: 8% 5%;
+}
+
+.FormFillDialog {
+  padding: 3%;
+}
+
+#dialogBox::backdrop {
+  opacity: 1;
+  backdrop-filter: blur(5px);
+  float: right;
+}
+#dialogBox {
+  box-shadow: 5px 10px #888888;
+  border-radius: 8px;
+  border: none;
+}
+#dialogBox header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#deleteButton {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 12px 32px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+#closeDialogFooter {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 12px 32px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+/* The Modal (background) */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  animation-name: slideIn;
+  animation-duration: 0.4s;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {
+  padding: 2px 16px;
+}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-card{
+  border: 1px #2d7930;
+  border-radius: 10px;
+}

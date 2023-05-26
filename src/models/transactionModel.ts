@@ -4,12 +4,12 @@ import monthYears, {
   transactionTypes,
 } from "../utils/constants";
 
-export interface EditTransactionPayloadType {
-  edit: Transaction;
+export interface EditFormPayloadType {
+  edit: Form;
   id: number;
 }
 
-export interface Transaction {
+export interface Form {
   [key: string]: any;
   id: number;
   tdate: string;
@@ -22,7 +22,7 @@ export interface Transaction {
   receipt: string;
 }
 
-type typeTransactionHeaders = {
+type typeFormHeaders = {
   [key: string]: {
     name: string;
     isSortable: boolean;
@@ -31,7 +31,7 @@ type typeTransactionHeaders = {
   };
 };
 
-export const TransactionTabHeaders: typeTransactionHeaders = {
+export const FormTabHeaders: typeFormHeaders = {
   tdate: { name: "Transaction-Date", isSortable: true, sortType: "date" },
   monthyear: { name: "Month-year", isSortable: true, sortType: "monthyear" },
   ttype: { name: "Transaction-Type", isSortable: true },
@@ -47,7 +47,7 @@ export const TransactionTabHeaders: typeTransactionHeaders = {
   notes: { name: "Notes", isSortable: true },
 };
 
-type typeTransactionForm = {
+type typeForm = {
   [key: string]: {
     name: string;
     label: string;
@@ -58,7 +58,7 @@ type typeTransactionForm = {
   };
 };
 
-export const dynamicTransactionForm: typeTransactionForm = {
+export const dynamicForm: typeForm = {
   tdate: {
     name: "tdate",
     label: "Transaction date",
@@ -107,7 +107,7 @@ export const dynamicTransactionForm: typeTransactionForm = {
   },
 };
 
-export const TransactionFormInitialValues = {
+export const FormInitialValues = {
   notes: "",
   amount: "",
   FromAc: "",

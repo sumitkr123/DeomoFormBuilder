@@ -1,157 +1,138 @@
-import { useCallback, useEffect, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import "../../../assets/styles/form.css";
-
-import { Link, useNavigate, useParams } from "react-router-dom";
-
-import { getFile } from "../../../utils/constants";
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-import {
-  addTransaction,
-  editTransaction,
-} from "../../../redux/ducks/transaction_slice";
-import { transactionValidationSchema } from "../../../validations/schema";
 import { FormField } from "../../../components/FormFields/FormField";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { RootState } from "../../../redux/store";
-import {
-  Transaction,
-  TransactionFormInitialValues,
-  dynamicTransactionForm,
-} from "../../../models/transactionModel";
 
-export const AddTransaction = (): React.JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(transactionValidationSchema),
-    mode: "all",
-  });
+const Components: { [key: string]: any } = {
+  input: "Input",
+  select: "Select Box",
+};
 
-  const { id } = useParams();
+const FormProps: { [key: string]: any } = {
+  name: {
+    name: "Name",
+    type: "text",
+  },
+  type: {
+    name: "Type",
+    type: "select",
+    options: ["text", "file", "password", "number", "date"],
+  },
+  label: {
+    name: "Label",
+    type: "text",
+  },
+};
 
-  const navigate = useNavigate();
+export const CreateForm = (): React.JSX.Element => {
+  const [choosedComponent, setChoosedComponent] = useState(<></>);
 
-  const [values, setValues] = useState<Transaction>(
-    TransactionFormInitialValues
-  );
-  const [submit, setSubmit] = useState<boolean>(false);
+  const [selected, setSelected] = useState<Array<JSX.Element>>([]);
 
-  const transactions = useAppSelector<Transaction[]>((state: RootState) => {
-    return state.transactions;
-  });
-  const dispatch = useAppDispatch();
+  const showComponent = (inputType: string) => {
+    let newComponent = <FormField type={inputType} />;
 
-  useEffect(() => {
-    if (id !== undefined && id !== "" && id !== null) {
-      let data = transactions.filter(
-        (item: Transaction) => item.id === parseInt(id)
-      );
-
-      if (data.length !== 0) {
-        let newvalues = { ...values };
-        for (let i in data[0]) {
-          newvalues[i] = data[0][i];
-
-          setValue(i, data[0][i]);
-        }
-        setValues(newvalues);
-      } else {
-        navigate("/*");
-      }
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (submit === true) {
-      let allvalues = { ...values };
-
-      let errflag = 0;
-
-      Object.values(allvalues).forEach((item) => {
-        if (item === null || item === undefined) {
-          errflag = 1;
-          return;
-        }
-      });
-
-      if (errflag !== 1) {
-        if (id !== null && id !== undefined && id !== "") {
-          dispatch(editTransaction({ edit: allvalues, id: parseInt(id) }));
-        } else {
-          dispatch(addTransaction(allvalues));
-        }
-
-        navigate(`/transactions`);
-      }
-    }
-  }, [submit]);
-
-  const onSubmit = useCallback(async (data: any): Promise<void> => {
-    if (typeof data.receipt !== "string") {
-      let file = await getFile(data.receipt[0]);
-
-      if (typeof file === "string") {
-        data.receipt = file;
-      }
-    }
-
-    let newdata = { ...values };
-    newdata = data;
-    setSubmit(true);
-    setValues(newdata);
-  }, []);
-
-  const removeFile = (): void => {
-    let newvalues = { ...values };
-
-    newvalues.receipt = "";
-
-    setValues(newvalues);
-    setValue("receipt", "");
+    setChoosedComponent(newComponent);
   };
+
+  const [toggleForm, setToggleForm] = useState(false);
+
+  const dialogref = useRef<any>("");
+
+  useEffect(() => {
+    if (selected.length !== 0) {
+      setToggleForm((old) => !old);
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    if (toggleForm) {
+      dialogref.current.style.display = "flex";
+    }
+  }, [toggleForm]);
 
   return (
     <div className="container">
-      <div className="formdiv">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          {Object.keys(dynamicTransactionForm).map((input) =>
-            dynamicTransactionForm[input].type === "file" ? (
-              <FormField
-                key={input}
-                formValues={values}
-                error={errors[input]?.message}
-                register={register}
-                {...dynamicTransactionForm[input]}
-                operations={{
-                  getFile: getFile,
-                  removeFile: removeFile,
-                  setValues: setValues,
-                }}
-              />
-            ) : (
-              <FormField
-                key={input}
-                formValues={values}
-                error={errors[input]?.message}
-                register={register}
-                {...dynamicTransactionForm[input]}
-              />
-            )
-          )}
-
-          <div className="actions">
-            <input type="submit" name="submit" value={"Submit"} />
+      <div className="dragdropformdiv">
+        <div className="choosingComponentDiv">
+          <div className="navDiv">
+            <nav className="navBar">
+              <label>
+                Choose component..! :-
+                <ul className="navUl">
+                  {Object.keys(Components).map((key) => {
+                    return (
+                      <li key={key} onClick={() => showComponent(key)}>
+                        {Components[key]}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </label>
+            </nav>
           </div>
-        </form>
+          <div className="showingComponentDiv">
+            <div
+              className="choosedComponent"
+              draggable="true"
+              onDrag={(e) => e.preventDefault()}
+            >
+              {choosedComponent}
+            </div>
+          </div>
+        </div>
+        <div
+          className="draggedHere"
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => {
+            setSelected((old) => [...old, choosedComponent]);
+          }}
+        >
+          <h1>Drag your component here</h1>
+          {selected}
+        </div>
+        {toggleForm && (
+          <div id="myModal" ref={dialogref} className="modal">
+            <div className="modal-card">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span
+                    className="close"
+                    onClick={() => {
+                      setToggleForm(false);
+                    }}
+                  >
+                    &times;
+                  </span>
+                  <h2>Modal Header</h2>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    {Object.keys(FormProps).map((key) => {
+                      console.log(choosedComponent);
+                      return choosedComponent.props.type === "select" &&
+                        key !== "type" ? (
+                        <FormField key={key} label={FormProps[key].name} />
+                      ) : (
+                        choosedComponent.props.type !== "select" && (
+                          <FormField
+                            key={key}
+                            label={FormProps[key].name}
+                            type={FormProps[key].type}
+                            options={FormProps[key].options}
+                          />
+                        )
+                      );
+                    })}
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <h3>Modal Footer</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      <Link to={`/transactions`}>See Data..!</Link>
     </div>
   );
 };
