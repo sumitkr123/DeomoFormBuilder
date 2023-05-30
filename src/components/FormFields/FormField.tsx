@@ -66,7 +66,7 @@ const Field = ({
   mainType,
   register,
 }: FormFieldProps) => {
-  let fieldBlock = <></>;
+  let fieldBlock: any = <></>;
 
   switch (type) {
     case "select":
@@ -208,6 +208,26 @@ const Field = ({
           {...(register ? register(name!) : null)}
         />
       );
+      break;
+    case "checkbox":
+      fieldBlock = options?.map((item, index) => {
+        return (
+          <div key={item + index}>
+            <input type="checkbox" id={name} name={name} value={item} />
+            {item}
+          </div>
+        );
+      });
+      break;
+    case "radio":
+      fieldBlock = options?.map((item, index) => {
+        return (
+          <div key={item + index}>
+            <input type="radio" id={name} name={name} value={item} />
+            {item}
+          </div>
+        );
+      });
       break;
     default:
       fieldBlock = (

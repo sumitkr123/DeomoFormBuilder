@@ -82,9 +82,11 @@ export const DashBoard = (): React.JSX.Element => {
               </span>
             </div>
             <div className="modal-body">
-              <form onSubmit={() => {}}>
-                {Object.values(viewForm).map((form: any) => {
-                  return <FormField {...form.props} />;
+              <form onSubmit={() => {}} className="form">
+                {Object.values(viewForm).map((form: any, index) => {
+                  return (
+                    <FormField key={index + form.props.name} {...form.props} />
+                  );
                 })}
               </form>
             </div>

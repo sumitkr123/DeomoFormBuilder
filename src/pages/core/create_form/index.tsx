@@ -14,6 +14,14 @@ const Components: { [key: string]: any } = {
     name: "Select",
     element: <FormField mainType="select" type="select" />,
   },
+  checkbox: {
+    name: "Checkbox",
+    element: <FormField mainType="checkbox" type="checkbox" />,
+  },
+  radio: {
+    name: "Radio",
+    element: <FormField mainType="radio" type="radio" />,
+  },
 };
 
 type FormPropsType = {
@@ -47,6 +55,34 @@ type FormPropsType = {
       type: string;
     };
   };
+  checkbox: {
+    name: {
+      name: string;
+      type: string;
+    };
+    label: {
+      name: string;
+      type: string;
+    };
+    options: {
+      name: string;
+      type: string;
+    };
+  };
+  radio: {
+    name: {
+      name: string;
+      type: string;
+    };
+    label: {
+      name: string;
+      type: string;
+    };
+    options: {
+      name: string;
+      type: string;
+    };
+  };
 };
 
 const FormProps: FormPropsType = {
@@ -66,6 +102,34 @@ const FormProps: FormPropsType = {
     },
   },
   select: {
+    name: {
+      name: "Name",
+      type: "text",
+    },
+    label: {
+      name: "Label",
+      type: "text",
+    },
+    options: {
+      name: "Enter options :- (Comma separated)",
+      type: "text",
+    },
+  },
+  checkbox: {
+    name: {
+      name: "Name",
+      type: "text",
+    },
+    label: {
+      name: "Label",
+      type: "text",
+    },
+    options: {
+      name: "Enter options :- (Comma separated)",
+      type: "text",
+    },
+  },
+  radio: {
     name: {
       name: "Name",
       type: "text",
@@ -134,9 +198,11 @@ export const CreateForm = (): React.JSX.Element => {
         newchoosed[key] = allOptions;
       } else if (
         key === "type" &&
-        choosedComponent.props.mainType === "select"
+        (choosedComponent.props.mainType === "select" ||
+          choosedComponent.props.mainType === "checkbox" ||
+          choosedComponent.props.mainType === "radio")
       ) {
-        newchoosed.type = "select";
+        newchoosed.type = choosedComponent.props.mainType;
       } else {
         newchoosed[key] = data[key];
       }
@@ -207,6 +273,7 @@ export const CreateForm = (): React.JSX.Element => {
         >
           <h1>Drag your component here</h1>
           {AllSelected.map((item, index) => {
+            console.log(item, AllSelected);
             return <div key={index}>{item}</div>;
           })}
           {AllSelected.length !== 0 && (
@@ -239,7 +306,9 @@ export const CreateForm = (): React.JSX.Element => {
                     {Object.keys(
                       FormProps[choosedComponent.props.mainType]
                     ).map((newkey) => {
-                      return choosedComponent.props.mainType === "select" ? (
+                      return choosedComponent.props.mainType === "select" ||
+                        choosedComponent.props.mainType === "checkbox" ||
+                        choosedComponent.props.mainType === "radio" ? (
                         <FormField
                           key={
                             newkey +
