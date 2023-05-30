@@ -1,10 +1,12 @@
 import { Navigate } from "react-router-dom";
-import { CreateForm } from "../pages/core/add_transaction";
 import { ErrorPage } from "../components/errorpage/errorPage";
+import React from "react";
+import { CreateForm } from "../pages/core/create_form";
+import { DashBoard } from "../pages/core/dashboard";
 
 export type TypeRoutes = {
   path: string;
-  element?: JSX.Element;
+  element?: React.JSX.Element;
   protected?: boolean;
   further?: Array<TypeRoutes>;
 };
@@ -21,6 +23,10 @@ export const routeList: TypeRoutes = {
       further: [
         {
           path: "",
+          element: <DashBoard />,
+        },
+        {
+          path: "create",
           element: <CreateForm />,
         },
       ],

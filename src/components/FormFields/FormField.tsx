@@ -5,26 +5,19 @@ import {
   Merge,
   UseFormRegister,
 } from "react-hook-form";
-import { Form } from "../../models/transactionModel";
 import React from "react";
 
 type FormFieldProps = {
-  [key: string]: any;
+  [key: string]: string | any;
   error?:
     | string
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<any>>
     | undefined;
-  formValues?: Form;
   label?: string;
   name?: string;
   operations?: {
-    [key: string]: (
-      ...args: any[]
-    ) =>
-      | void
-      | React.Dispatch<React.SetStateAction<Form>>
-      | Promise<string | ArrayBuffer | null>;
+    [key: string]: (...args: any[]) => any;
   };
   otherType?: string;
   register?: UseFormRegister<FieldValues>;
@@ -69,6 +62,8 @@ const Field = ({
   options,
   operations,
   formValues,
+  placeholder,
+  mainType,
   register,
 }: FormFieldProps) => {
   let fieldBlock = <></>;
