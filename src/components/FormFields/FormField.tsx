@@ -109,6 +109,17 @@ const Field = ({
         />
       );
       break;
+    case "email":
+      fieldBlock = (
+        <input
+          className="forminputs"
+          type="email"
+          id={name}
+          name={name}
+          {...(register ? register(name!) : null)}
+        />
+      );
+      break;
     case "textarea":
       fieldBlock = (
         <textarea

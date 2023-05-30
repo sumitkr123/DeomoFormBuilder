@@ -58,7 +58,7 @@ const FormProps: FormPropsType = {
     type: {
       name: "Type",
       type: "select",
-      options: ["text", "file", "password", "number", "date"],
+      options: ["text", "file", "password", "number", "date","email"],
     },
     label: {
       name: "Label",
